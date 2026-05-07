@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "web/app.py",
+      "use": "@streamlit/vercel"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "web/app.py"
+    }
+  ],
+  "env": {
+    "STREAMLIT_SERVER_HEADLESS": "true"
+  }
+}
