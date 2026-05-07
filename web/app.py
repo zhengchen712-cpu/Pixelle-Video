@@ -1,75 +1,49 @@
-# Copyright (C) 2025 AIDC-AI
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#     http://www.apache.org/licenses/LICENSE-2.0
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 """
-Pixelle-Video Web UI - Main Entry Point
-
-This is the entry point for the Streamlit multi-page application.
-Uses st.navigation to define pages and set the default page to Home.
+Pixelle-Video Web UI - Simple version for Streamlit deployment
 """
-
 import sys
 from pathlib import Path
 
-# Add project root to sys.path for module imports
+# Fix path - add project root and web directory
 _script_dir = Path(__file__).resolve().parent
 _project_root = _script_dir.parent
 if str(_project_root) not in sys.path:
     sys.path.insert(0, str(_project_root))
+if str(_script_dir) not in sys.path:
+    sys.path.insert(0, str(_script_dir))
 
 import streamlit as st
 
-# Setup page config (must be first Streamlit command)
+# Setup page config
 st.set_page_config(
     page_title="Pixelle-Video - AI Video Generator",
     page_icon="🎬",
     layout="wide",
-    initial_sidebar_state="collapsed",
 )
 
-
 def main():
-    """Main entry point with navigation"""
-    # Define pages using st.Page
-    home_page = st.Page(
-        "pages/1_🎬_Home.py",
-        title="Home",
-        icon="🎬",
-        default=True
-    )
+    st.title("🎬 Pixelle-Video AI 视频生成器")
     
-    history_page = st.Page(
-        "pages/2_📚_History.py",
-        title="History",
-        icon="📚"
-    )
+    st.markdown("""
+    ### 欢迎使用 AI 视频生成工具！
     
-    # Set up navigation and run
-    pg = st.navigation([home_page, history_page])
-    pg.run()
-
+    ✅ **功能特点：**
+    - 输入文本自动生成视频脚本
+    - AI 自动生成画面和配音
+    - 支持多种风格和比例
+    
+    🚀 **正在部署中，更多功能即将上线...**
+    """)
+    
+    # Simple text input for testing
+    prompt = st.text_area("请输入你想生成的视频内容：", height=150, placeholder="例如：做一个关于春天的15秒短视频...")
+    
+    if st.button("🎬 生成视频", type="primary"):
+        if prompt:
+            st.info("🚀 正在调用 AI 生成视频，请稍候...")
+            st.success("✅ 功能开发中，敬请期待！")
+        else:
+            st.warning("请先输入视频内容")
 
 if __name__ == "__main__":
     main()
-
-# Vercel Serverless Function Handler
-from fastapi import FastAPI
-from fastapi.middleware.wsgi import WSGIMiddleware
-import streamlit.web.server as st_server
-
-app = FastAPI()
-
-# Mount Streamlit as WSGI app
-# Note: For Vercel, it's better to use a custom server approach
-@app.get("/")
-async def root():
-    return {"message": "Pixelle-Video is running"}
