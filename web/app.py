@@ -60,3 +60,16 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# Vercel Serverless Function Handler
+from fastapi import FastAPI
+from fastapi.middleware.wsgi import WSGIMiddleware
+import streamlit.web.server as st_server
+
+app = FastAPI()
+
+# Mount Streamlit as WSGI app
+# Note: For Vercel, it's better to use a custom server approach
+@app.get("/")
+async def root():
+    return {"message": "Pixelle-Video is running"}
